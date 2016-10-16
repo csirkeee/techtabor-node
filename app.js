@@ -26,6 +26,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(upload.array());
 
+//static fileok a public mappaban
+app.use(express.static('public'));
+
 //fooldal
 app.get('/', function (req, res) {
 	console.log('request homera');

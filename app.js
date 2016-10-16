@@ -9,14 +9,13 @@ var upload = multer();
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/node-todo-app'); 
 
-//app deklaralas
-var app = express();
-
 // define model =================
 var Todo = mongoose.model('Todo', {
     text : String
 });
 
+//app deklaralas
+var app = express();
 
 //view
 app.set('view engine', 'pug');
@@ -27,32 +26,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(upload.array());
 
-var todos = []
-
 //fooldal
 app.get('/', function (req, res) {
+	console.log('request homera');
 	Todo.find(function(err, todos) {
-		console.log(todos);
 		var texts = [];
 		for (var i = 0; i < todos.length; ++i) {
 			texts.push(todos[i].text);
 		}
 		console.log(texts);
 		res.render('home', {todos: texts});
-		console.log('request homera');
 	});
 	
 });
 
 //todo hozzaadas
 app.get('/add_todo', function(req, res) {
-	res.render('add_todo');
 	console.log('request add_todo-ra');
+	res.render('add_todo');
 });
 
 app.post('/add', function(req, res) {
 	res.render('add');
-	console.log(req.body.todo_text);
+	console.log('todo hozzadas: ' + req.body.todo_text);
 	Todo.create({text: req.body.todo_text})
 });
 
